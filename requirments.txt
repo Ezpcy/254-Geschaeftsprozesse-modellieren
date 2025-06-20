@@ -1,0 +1,5 @@
+fastapi
+camunda-external-task-client-python3
+sqlite4
+uvicorn
+itsdangerous
