@@ -6,7 +6,17 @@
 
 ## 1.  Einleitung
 
-Dieses Dokument beschreibt das Geschäftsprozessmodell eines Onlineshops. Das Modell bildet den Kernprozess einer Online-Bestellung ab, von der Kundeninteraktion bis zur Zahlungsabwicklung. Die Erstellung dieses Modells erfolgt im Rahmen des Moduls "254 - Geschäftsprozesse modellieren" an der Technischen Berufsfachschule Zürich.
+Dieses Dokument beschreibt das Geschäftsprozessmodell eines Onlineshops. Das Modell bildet den Kernprozess einer Online-Bestellung ab, von der Kundeninteraktion bis zur Zahlungsabwicklung. Die Erstellung dieses Modells erfolgte im Rahmen des Moduls "254 - Geschäftsprozesse modellieren" an der Technischen Berufsfachschule Zürich.
+
+### 1.1 Ziel und Nutzen
+
+Ziel dieses Prozesses ist es, die Onlinebestellung effizient, kundenfreundlich und automatisiert abzuwickeln. Der Nutzen besteht in:
+
+- Reduktion von Bearbeitungszeiten
+- Klarer Trennung von Verantwortlichkeiten
+- Transparenz für Kunden und Betreiber 
+- Grundlage für Prozessautomatisierung und -optimierung sowie KPI-Überwachung (Key Performance Indicators)
+
 ## 2.  Beschreibung des Geschäftsprozesses
 
 Der abgebildete Geschäftsprozess beschreibt den Ablauf einer Bestellung in einem Onlineshop und involviert mehrere Akteure: den **Kunden**, den **Shopbetreiber**, den **Lieferanten** und die **Post**.
