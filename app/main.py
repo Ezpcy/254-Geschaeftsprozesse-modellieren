@@ -7,6 +7,7 @@ import threading
 import uvicorn
 
 db = Db()
+orders = []
 
 default_config = {
     "maxTasks": 1,
@@ -14,17 +15,54 @@ default_config = {
     "asyncResponseTimeout": 5000,
     "retries": 3,
     "retryTimeout": 5000,
-    "sleepSeconds": 30
+    "sleepSeconds": 2
 }
 
+def login_angaben(task: ExternalTask) -> TaskResult:
+    print("Login Angaben task started")
+    email = input("Bitte geben Sie Ihre E-Mail-Adresse ein: ")
+    password = input("Bitte geben Sie Ihr Passwort ein: ")
+    
+    if not email or not password:
+        return task.failure("Error", "No login details provided", 0, 0)
+
+    return task.complete({"email": email, "password": password})
+
+def login(task: ExternalTask) -> TaskResult:
+    print("Login task started")
+    email = task.get_variable("email")
+    password = task.get_variable("password")
+    if (email == None) and (password == None):
+        return task.failure("Error", "No login details provided", 0,0)
+
+    if db.validate_user(str(email), str(password)):
+        return task.complete({"validated": True})
+    else:
+        return task.failure("Not authorized", "User Not authorized", 0, 0)
+
+
+def produkte_suchen(task: ExternalTask) -> TaskResult:
+    print("Produkte suchen task started")
+    produkte = db.get_all_products()
+    print(f"Folgende Produkte gefunden: {produkte}")
+    bestellen= int(input("Welches Produkt möchten Sie bestellen? (ID eingeben): "))
+    quantity = int(input("Wie viele Stück möchten Sie bestellen? (Anzahl eingeben): "))
+    if not db.get_product(bestellen):
+        return task.complete({"gefunden": False, "message": "Produkt nicht gefunden"})
+    if db.get_product(bestellen)[4] < quantity:
+        return task.complete({"gefunden": False, "message": "Nicht genügend Lagerbestand"})
+    print(f"Bestelle {quantity} Stück von Produkt {bestellen}")
+    return task.complete({"product_id": bestellen, "quantity": quantity, "gefunden": True})
+
+
 def handle_bestellung_lager(task: ExternalTask) -> TaskResult:
+    print("Handle Bestellung Lager task started")
     product_id = task.get_variable("product_id")
     quantity = task.get_variable("quantity")
 
     if product_id is None or quantity is None:
         return task.failure("Missing input", "Variables are missing", 0, 0)
 
-    product_id = int(product_id)
     quantity = int(quantity)
 
 
@@ -42,34 +80,87 @@ def send_message(name: str, variables: dict):
     }
     post(url, json=payload)
 
-def handle_pruefen(task: ExternalTask) -> TaskResult:
+def status_versand(task: ExternalTask) -> TaskResult:
+    print("Status Versand task started")
+    order_id = task.get_variable("order_id")
+    status = task.get_variable("status")
+
+    if order_id is None or status is None:
+        return task.failure("Missing input", "Order ID or status is missing", 0, 0)
+
+    print(f"Bestellung {order_id} hat den Status: {status}")
+    return task.complete({"order_id": order_id, "status": status})
+
+
+def bestellung_prüfen(task: ExternalTask) -> TaskResult:
+    print("Bestellung prüfen task started")
     product_id = task.get_variable("product_id")
+    user_id = db.get_user_id_by_email(str(task.get_variable("email")))
     quantity = task.get_variable("quantity")
+    product_name = db.get_product(product_id)[1]
 
-    if product_id is None or quantity is None:
-        return task.failure("Missing input", "Variables are missing", 0, 0)
-
-    product_id = int(product_id)
-    quantity = int(quantity)
-
-    result = db.get_product(product_id)
-    if not result or result[4] < quantity:
-        send_message("lager_bestellen", {
+    print(f"Du bestellst {quantity} Stück von {product_name} (ID: {product_id})")
+    submit = input("Möchtest du die Bestellung abschließen? (ja/nein): ").strip().lower()
+    if submit == "ja":
+        print("Bestellung erfolgreich!")
+        orders.append({
+            "user_id": user_id,
             "product_id": product_id,
             "quantity": quantity
         })
-        return task.complete()
+        # Start the OnlineShop process
+        send_message("bestellung_abgeschlossen", {
+            "user_id": user_id,
+            "product_id": product_id,
+            "quantity": quantity
+        })
+        return task.complete({"bestellung_abgeschlossen": True})
+    else:
+        return task.complete({"bestellung_abgeschlossen": False})
 
-    print(f"Genügend Lager für Produkt {product_id}")
-    return task.complete()
+def handle_pruefen(task: ExternalTask) -> TaskResult:
+    print("Handle Prüfen task started")
+    product_id = orders[-1]["product_id"] if orders else None
+    quantity = orders[-1]["quantity"] if orders else None
+    print(f"Prüfe Lagerbestand für Produkt {product_id} mit Menge {quantity}")
+    result = db.get_product(product_id)
+    if result and result[4] >= quantity:
+        print("Lagerbestand ausreichend, Bestellung kann bearbeitet werden.")
+        return task.complete({"genug_lager": True})
+    else:
+        print("Lagerbestand nicht ausreichend, Bestellung kann nicht bearbeitet werden.")
+        return task.complete({"genug_lager": False})
 
-def start_worker():
-    worker = ExternalTaskWorker(worker_id="1", config=default_config)
-    worker.subscribe("bestellung_pruefen", handle_pruefen)
-    worker.subscribe("bestellung_lager", handle_bestellung_lager)
+
+
+
+#def start_worker():
+    #worker = ExternalTaskWorker(worker_id="1", config=default_config).subscribe("handle_pruefen", handle_pruefen).subscribe("handle_bestellung_lager", handle_bestellung_lager).subscribe("login", login).subscribe("produkte_suchen", produkte_suchen).subscribe("bestellung_prüfen", bestellung_prüfen)
 
 if __name__ == "__main__":
-    threading.Thread(target=start_worker, daemon=True).start()
-    uvicorn.run(get_app(), host="127.0.0.1", port=8000, reload=True)
+    #threading.Thread(target=start_worker, daemon=True).start()
+    #uvicorn.run(get_app(), host="127.0.0.1", port=8000, reload=True)
+    
+    # ExternalTaskWorker(worker_id="1", config=default_config).subscribe("login", login)
+    # ExternalTaskWorker(worker_id="2", config=default_config).subscribe("produkte_suchen", produkte_suchen)
+    # ExternalTaskWorker(worker_id="2", config=default_config).subscribe("handle_bestellung_lager", handle_bestellung_lager)
+    # ExternalTaskWorker(worker_id="3", config=default_config).subscribe("bestellung_prüfen", bestellung_prüfen)
+    # ExternalTaskWorker(worker_id="4", config=default_config).subscribe("handle_pruefen", handle_pruefen)
+    # ExternalTaskWorker(worker_id="5", config=default_config).start()
+
+    # Spawn each worker in its own thread
+    worker1 = threading.Thread(target=lambda: ExternalTaskWorker(worker_id="1", config=default_config).subscribe("login", login).start(), daemon=False)
+    worker2 = threading.Thread(target=lambda: ExternalTaskWorker(worker_id="1", config=default_config).subscribe("produkte_suchen", produkte_suchen).start(), daemon=False)
+    worker3 = threading.Thread(target=lambda: ExternalTaskWorker(worker_id="1", config=default_config).subscribe("handle_bestellung_lager", handle_bestellung_lager).start(), daemon=False)
+    worker4 = threading.Thread(target=lambda: ExternalTaskWorker(worker_id="1", config=default_config).subscribe("bestellung_prüfen", bestellung_prüfen).start(), daemon=False)
+    worker5 = threading.Thread(target=lambda: ExternalTaskWorker(worker_id="1", config=default_config).subscribe("handle_pruefen", handle_pruefen).start(), daemon=False)
+    worker6 = threading.Thread(target=lambda: ExternalTaskWorker(worker_id="1", config=default_config).subscribe("login_angaben", login_angaben).start(), daemon=False)
+    worker1.start()
+    worker2.start()
+    worker3.start()
+    worker4.start()
+    worker5.start()
+    worker6.start()
+
 
 

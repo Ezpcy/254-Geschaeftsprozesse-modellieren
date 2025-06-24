@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from db import Db
@@ -54,6 +55,15 @@ def admin_auth(email: str = Depends(session_auth)):
 class OnlineShopAPI:
     def __init__(self):
         self.app = FastAPI()
+
+        self.app.add_middleware(
+            CORSMiddleware,
+            allow_origins=["*"],  # Allow all domains (for testing)
+            allow_credentials=True,
+            allow_methods=["*"],  # Allow all HTTP methods
+            allow_headers=["*"],  # Allow all headers
+        )
+
         self.db = db
         self.setup_routes()
 

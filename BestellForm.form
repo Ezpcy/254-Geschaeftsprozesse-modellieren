@@ -1,0 +1,31 @@
+{
+  "components": [
+    {
+      "label": "Email",
+      "type": "textfield",
+      "id": "email",
+      "key": "email"
+    },
+    {
+      "label": "ProductId",
+      "type": "number",
+      "id": "product_Id",
+      "key": "product_id"
+    },
+    {
+      "label": "Quantity",
+      "type": "number",
+      "id": "quantity",
+      "key": "quantitiy"
+    }
+  ],
+  "type": "default",
+  "id": "BestellForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.8.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 7
+}

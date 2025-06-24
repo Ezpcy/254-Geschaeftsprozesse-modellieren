@@ -96,6 +96,15 @@ class Db:
                 return False
             return decoded == password
 
+    def update_order_status(self, order_id: int, status: str) -> str:
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE orders SET status = ? WHERE id = ?", (status, order_id))
+            if cursor.rowcount == 0:
+                return "Order not found."
+            conn.commit()
+            return "Order status updated."
+
     def get_user_id_by_email(self, email: str) -> int:
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()

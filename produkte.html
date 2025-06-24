@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <title>Produkte</title>
+</head>
+
+<body>
+  <h1>Produkte</h1>
+  <p>Hier finden Sie eine Liste unserer Produkte:</p>
+  <div id="product-list">
+    <!-- Produktliste wird hier dynamisch eingefügt -->
+  </div>
+  <script>
+    let products = "http://localhost:8000/products";
+
+    fetch(products)
+      .then(response => response.json())
+      .then(data => {
+        let productList = document.getElementById('product-list');
+        data.forEach(product => {
+          let productDiv = document.createElement('div');
+          productDiv.innerHTML = `
+            <h2>${product[1]}</h2>
+            <p>${product[2]}</p>
+            <p>Preis: €${product[3].toFixed(2)}</p>
+            <p>Verfügbar: ${product[4]} Stück</p>
+            <p>Letzte Aktualisierung: ${new Date(product[5]).toLocaleDateString()}</p>
+          `;
+          productList.appendChild(productDiv);
+        });
+      })
+      .catch(error => console.error('Fehler beim Laden der Produkte:', error));
+
+  </script>
+</body>
+
+</html>
+
+
+<!-- 
+Products Look like this
+[
+    [
+        1,
+        "Gaming Mouse",
+        "High precision wireless gaming mouse",
+        49.99,
+        23,
+        "2025-06-20"
+    ],
+    [
+        2,
+        "Mechanical Keyboard",
+        "RGB backlit keyboard with blue switches",
+        89.99,
+        15,
+        "2025-06-20"
+    ],
+    [
+        3,
+        "HD Monitor",
+        "24-inch Full HD LED monitor",
+        159.99,
+        10,
+        "2025-06-20"
+    ]
+-->

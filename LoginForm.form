@@ -1,0 +1,25 @@
+{
+  "components": [
+    {
+      "label": "Email",
+      "type": "textfield",
+      "id": "email",
+      "key": "email"
+    },
+    {
+      "label": "password",
+      "type": "password",
+      "id": "password",
+      "key": "password"
+    }
+  ],
+  "type": "default",
+  "id": "LoginForm",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.8.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 7
+}

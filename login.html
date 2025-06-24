@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <title>User Task - email und Nachname</title>
+</head>
+
+<body>
+  <h1>User Task - email und Nachname</h1>
+  <form id="userForm">
+    <label for="email">email:</label>
+    <input type="email" id="email" name="email" required cam-variable-name="email" cam-variable-type="String">
+    <br><br>
+
+    <label for="password">password:</label>
+    <input type="password" id="password" name="password" required cam-variable-name="password"
+      cam-variable-type="String">
+    <br><br>
+    <input type="submit" value="Senden">
+  </form>
+
+  <script>
+    let urlProcessEngine = "http://localhost:8080/engine-rest/process-definition/key/OnlineShopKunde/start";
+    document.getElementById('userForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Daten aus dem Formular erfassen
+      var email = document.getElementById('email').value;
+      var password = document.getElementById("password").value;
+
+      // JSON-Objekt erstellen
+      var formData = {
+        "variables": {
+          "email": {"value": email, "type": "String"},
+          "password": {"value": password, "type": "String"}
+        }
+      };
+
+      // Formulardaten an die Server-URL senden (hier als Beispiel eine Dummy-URL)
+      // Ersetzen Sie die Dummy-URL durch die tatsächliche URL Ihrer Prozess-Engine
+      fetch(urlProcessEngine, {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('HTTP error, Status: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(function (data) {
+          // Hier können Sie die Antwort von der Prozess-Engine verarbeiten
+          console.log('Antwort von der Prozess-Engine:', data);
+          alert('Daten erfolgreich an die Prozess-Engine gesendet!');
+        })
+        .catch(function (error) {
+          console.error('Fehler beim Senden der Daten:', error);
+          alert('Fehler beim Senden der Daten an die Prozess-Engine.');
+        });
+    });
+  </script>
+</body>
+
+</html>
