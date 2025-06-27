@@ -38,12 +38,3 @@ CREATE TABLE IF NOT EXISTS orders (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
-INSERT INTO orders (user_id, product_id, quantity, total_amount)
-SELECT 1, id, 2, price * 2 FROM products WHERE id = 1;
-
-INSERT INTO orders (user_id, product_id, quantity, total_amount)
-SELECT 2, id, 1, price * 1 FROM products WHERE id = 2;
-
-INSERT INTO orders (user_id, product_id, quantity, total_amount)
-SELECT 1, id, 3, price * 3 FROM products WHERE id = 3;
-

@@ -8,7 +8,7 @@
     },
     {
       "label": "password",
-      "type": "password",
+      "type": "textfield",
       "id": "password",
       "key": "password"
     }
