@@ -47,57 +47,61 @@ Der Warenkorb wird in der Datenbank gespeichert.
 
 6. **Zur Kasse gehen:**
 
-Ist der Kunde registriert (oder hat sich registriert), müssen die "Logindaten eingeben" werden
+7. **Angaben prüfen:** Der Kunde prüft die Angaben im Warenkorb und seine eigenen Angaben(Bezahlart, Lieferadresse, usw.).
 
-Anschliessend ist die "Adresse eingeben" notwendig, gefolgt vom "Bestellung prüfen"
+8. **Alles richtig?**
+    - **Entscheidung:** Sind alle Angaben korrekt?
+        - **Ja:** Weiter zu **"Bestellung abschicken"**.
+        - **Nein:** Der Kunde kann die Angaben korrigieren und erneut prüfen.
 
-Nach der Prüfung der Bestellung führt der Kunde die "Bezahlung durchführen"
+9. **Bezahlen:** Der Kunde wählt die Zahlungsmethode aus und gibt die erforderlichen Zahlungsinformationen ein.
 
-Ein Exklusives Gateway prüft, ob die "Zahlung erfolgt" ist
-Ist dies nicht der Fall, wird die "Bestellung stornieren"
-ausgeführt und der Prozess für diesen Pfad beendet.
+10. **Bestellung abschicken:** Der Kunde schickt die Bestellung ab, was eine Nachricht an den Geschäftskunden auslöst.
 
-Erfolgt die Zahlung, wird die "Bestellung abschliessen"
-und das Endereignis "Bestellung abgeschlossen" erreicht
+11. **Bestellung erhalten:** Der Kunde erhält sein Paket.
 
-Während des Prozesses sendet der Kunde eine Nachrichtenfluss "Bestellung" an den Geschäftskunden
-Auch die Kommunikation über die Zahlung erfolgt via Nachrichtenflüsse zwischen Kunde und Geschäftskunde
+12. **Ende:** Der Prozess endet mit dem Empfang der Bestellung.
 
-### **OnlineShop-Prozess (Pool "OnlineShop")**
+### **OnlineShop-Prozess (Pool OnlineShop")**
+
 ![Pool OnlineShop](./image/M254_OnlineShop_ShopPool.png)
-Der Prozess für den Geschäftskunden beginnt mit dem Empfang der "Bestellung erhalten"-Nachricht vom Kunden
 
-Danach wird die "Bestellung prüfen"
- und über ein Exklusives Gateway entschieden, ob die "Bestellung gültig" ist
+1. **Start:** Der Prozess beginnt mit dem Empfang der **"Bestellung erhalten"-Nachricht** vom Kunden.
 
-Ist die Bestellung nicht gültig, wird sie "Bestellung ablehnen"
- und eine Ablehnungsnachricht an den Kunden gesendet
+2. **Bestellung überprüfen:** Der Shop prüft die Bestellung auf Gültigkeit.
+    - **Entscheidung:** Ist der Artikel vorhanden?
+        - **Ja:** Weiter zu **"Waren verpacken"**.
+        - **Nein:** Weiter zu **"Artikel beim Lieferanten bestellen"**.
 
-Ist die Bestellung gültig, wird die "Bestellung bestätigen"
- und eine Bestätigungsnachricht an den Kunden gesendet
+3. **Artikel beim Lieferanten bestellen:** Der Shop bestellt den Artikel beim Lieferanten.
 
-Anschliessend wird die "Bestellung verarbeiten"
+4. **Waren erhalten:** Der Shop erhält die Waren vom Lieferanten.
 
-Nach der Verarbeitung wird die "Bestellung versenden"
- Eine Warensendung-Nachricht geht an die Post
+5. **Waren verpacken:** Der Shop verpackt die Waren für den Versand.
 
-Der Geschäftskunde empfängt eine "Wareneingang"-Nachricht von der Post
-, was zum Task "Wareneingang prüfen" führt
+6. **Waren versenden:** Der Shop sendet die Waren an die Post, was eine **"Warensendung"-Nachricht** auslöst.
 
-Parallel dazu wird die "Rechnung erstellen"
- und der "Zahlungseingang prüfen"
+7. **Bestellstatus "Versendet":** Der Shop aktualisiert den Bestellstatus auf "Versendet". Dies wird in der Datenbank gespeichert.
 
-Wird der Zahlungseingang nicht innerhalb einer bestimmten Zeit erkannt, wird eine "Mahnung versenden"
- und der Prozess für die "Mahnung verarbeiten"
- fortgesetzt.
- Verantwortlichkeit im Zusammenhang mit der "Bestellung verarbeiten" und "Bestel
-Lieferanten-Prozess (Pool "Lieferant"):
+8. **Zustellbestätigung erhalten:** Der Shop erhält eine **"Wareneingang"-Nachricht** von der Post, die den erfolgreichen Versand bestätigt.
 
-Obwohl detaillierte Aufgaben nicht 2sichtbar sind, ist der Lieferant als Pool vorhanden, was eine Interaktion oderlung versenden" im Geschäftskunden-Pool impliziert
+9. **Bestellstatus "Abgeschlossen":** Der Shop aktualisiert den Bestellstatus auf "Abgeschlossen". Dies wird in der Datenbank gespeichert.
 
-Post-Prozess (Pool "Post"):
+10. **Ende:** Der Prozess endet mit der Aktualisierung des Bestellstatus.
 
-Die Post erhält die "Warensendung" vom Geschäftskunden und sendet eine "Wareneingang"-Nachricht an den Geschäftskunden, sobald die Sendung bearbeitet wurde
+### **Post-Prozess (Pool "Post")**
+![Pool Post](./image/M254_OnlineShop_PostPool.png)
+1. **Start:** Der Prozess beginnt mit dem Empfang der **"Warensendung"-Nachricht** vom Geschäftskunden.
+
+2. **Bestellung liefern:** Die Post liefert die Bestellung an den Kunden.
+
+3. **Paket Empfänger übergeben:** Die Post übergibt das Paket an den Empfänger.
+
+4. **Ende:** Der Prozess endet mit der Übergabe des Pakets an den Empfänger.
+
+### **Lieferanten-Prozess (Pool "Lieferant")**
+
+Der Prozess des Lieferanten ist in diesem Modell nicht explizit dargestellt, da er nur indirekt über die Bestellung von Artikeln durch den Shop involviert ist. Der Lieferant wird benachrichtigt, wenn der Shop Artikel bestellt, und liefert diese an den Shop.
 
 ## 3. Architektur
 
