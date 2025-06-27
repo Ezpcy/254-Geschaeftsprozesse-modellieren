@@ -1,4 +1,4 @@
-# Online Shop Buissness Model
+# Geschäftsprozessmodell eines Onlineshops
 
 **Authors**: Ronny Bruhin, Batuhan Seker
 
@@ -6,7 +6,7 @@
 
 ## 1.  Einleitung
 
-Dieses Dokument beschreibt das Geschäftsprozessmodell eines Onlineshops. Das Modell bildet den Kernprozess einer Online-Bestellung ab, von der Kundeninteraktion bis zur Zahlungsabwicklung. Die Erstellung dieses Modells erfolgte im Rahmen des Moduls "254 - Geschäftsprozesse modellieren" an der Technischen Berufsfachschule Zürich.
+Dieses Dokument beschreibt das Geschäftsprozessmodell eines Onlineshops. Das Modell bildet den Kernprozess einer Online-Bestellung ab, von der Kundeninteraktion bis zur Zahlungsabwicklung. Die Erstellung dieses Modells erfolgte im Rahmen des Moduls "254 - Geschäftsprozesse modellieren" an der TBZ.
 
 ### 1.1 Ziel und Nutzen
 
@@ -22,30 +22,32 @@ Ziel dieses Prozesses ist es, die Onlinebestellung effizient, kundenfreundlich u
 Der abgebildete Geschäftsprozess beschreibt den Ablauf einer Bestellung in einem Onlineshop und involviert mehrere Akteure: den **Kunden**, den **Shopbetreiber**, den **Lieferanten** und die **Post**.
 
 ![Online Shop Geschäftsprozess](./image/M254_OnlineShop_BPMN.png)
+_Abbildung 1: Geschäftsprozessmodell eines Onlineshops_
 
 ### **Kunden-Prozess (Pool "Kunde")**
 
 ![Pool Kunde](./image/M254_OnlineShop_KundePool.png)
+_Abbildung 2: Pool "Kunde"_
 
-1. **Start:** Der Prozess beginnt im Pool "Kunde" mit dem Start Event **"Will etwas bestellen"**.
+1. **Start:** Der Prozess beginnt im Pool "Kunde" mit dem Start Ereignis **"Will etwas bestellen"**.
 
-2. **Login Data Entry:** Der Kunde gibt seine  Logindaten ein.
+2. **Login-Daten eingeben:** Der Kunde gibt seine  Login-Daten ein.
 
 3. **Login:** Das System versucht den Kunden einzuloggen.
     - **Entscheidung:** Ist der Login erfolgreich?
         - **Ja:** Weiter zu **"Adresse eingeben"**.
-        - **Nein:** Wenn der Login fehlschlägt, wird der Prozess beendet.
+        - **Nein:** Wenn der Login fehlschlägt, endet der Prozess ohne Bestellung.
 
 4. **Produkte durchstöbern:** Der Kunde stöbert durch die verfügbaren Produkte.
     - **Entscheidung:** Hat der Kunde passende Produkte gefunden?
         - **Ja:** Weiter zu **"Produkte in den Warenkorb legen"**.
-        - **Nein:** Wenn der Kunde keine Produkte ausgewählt hat, wird der Prozess beendet.
+        - **Nein:** Wenn der Kunde keine Produkte ausgewählt hat, endet der Prozess ohne Bestellung.
 
 5. **Produkte in den Warenkorb legen:** Der Kunde legt die ausgewählten Produkte in den Warenkorb.
-Dabei wird ein **Compensation Event** ausgelöst, um den Warenkorb bei Bedarf zurückzusetzen.
+Dabei wird ein **Kompensations-Ereignis** ausgelöst, um den Warenkorb bei Bedarf zurückzusetzen.
 Der Warenkorb wird in der Datenbank gespeichert.
 
-6. **Zur Kasse gehen:**
+6. **Zur Kasse gehen (manuell):**
 
 7. **Angaben prüfen:** Der Kunde prüft die Angaben im Warenkorb und seine eigenen Angaben(Bezahlart, Lieferadresse, usw.).
 
@@ -54,7 +56,7 @@ Der Warenkorb wird in der Datenbank gespeichert.
         - **Ja:** Weiter zu **"Bestellung abschicken"**.
         - **Nein:** Die Compensation wird ausgelöst, welche den Warenkorb leert.
 
-9. **Bezahlen:** Der Kunde wählt die Zahlungsmethode aus und gibt die erforderlichen Zahlungsinformationen ein.
+9. **Zahlungsdaten eingeben:** Der Kunde wählt die Zahlungsmethode aus und gibt die erforderlichen Zahlungsinformationen ein.
 
 10. **Bestellung abschicken:** Der Kunde schickt die Bestellung ab, was eine Nachricht an den Geschäftskunden auslöst.
 
@@ -65,6 +67,7 @@ Der Warenkorb wird in der Datenbank gespeichert.
 ### **OnlineShop-Prozess (Pool OnlineShop")**
 
 ![Pool OnlineShop](./image/M254_OnlineShop_ShopPool.png)
+_Abbildung 3: Pool "OnlineShop"_
 
 1. **Start:** Der Prozess beginnt mit dem Empfang der **"Bestellung erhalten"-Nachricht** vom Kunden.
 
@@ -92,18 +95,19 @@ Der Warenkorb wird in der Datenbank gespeichert.
 ### **Post-Prozess (Pool "Post")**
 
 ![Pool Post](./image/M254_OnlineShop_PostPool.png)
+_Abbildung 4: Pool "Post"_
 
 1. **Start:** Der Prozess beginnt mit dem Empfang der **"Warensendung"-Nachricht** vom Geschäftskunden.
 
 2. **Bestellung liefern:** Die Post liefert die Bestellung an den Kunden.
 
-3. **Paket Empfänger übergeben:** Die Post übergibt das Paket an den Empfänger.
+3. **Paket an Kunden übergeben:** Die Post übergibt das Paket an den Kunden.
 
-4. **Ende:** Der Prozess endet mit der Übergabe des Pakets an den Empfänger.
+4. **Ende:** Der Prozess endet mit der Übergabe des Pakets an den Kunden.
 
 ### **Lieferanten-Prozess (Pool "Lieferant")**
 
-Der Prozess des Lieferanten ist in diesem Modell nicht explizit dargestellt, da er nur indirekt über die Bestellung von Artikeln durch den Shop involviert ist. Der Lieferant wird benachrichtigt, wenn der Shop Artikel bestellt, und liefert diese an den Shop.
+Der Lieferantenprozess ist im Modell als Platzhalter enthalten, da die interne Logik nicht Teil des betrachteten Systems ist.
 
 ## 3. Architektur
 
