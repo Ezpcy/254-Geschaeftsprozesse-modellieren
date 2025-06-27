@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0f25eaq" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.36.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0f25eaq"
+  targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0"
+  modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
   <bpmn:collaboration id="Collaboration_043j7ah">
     <bpmn:participant id="Participant_0j7rnwp" name="OnlineShop" processRef="OnlineShopBusiness" />
     <bpmn:participant id="Participant_0igdcb0" name="OnlineShopKunde" processRef="OnlineShopKunde" />
@@ -12,7 +20,8 @@
     <bpmn:messageFlow id="Flow_11ksiry" sourceRef="Event_077byfy" targetRef="Event_017ae07" />
     <bpmn:messageFlow id="Flow_1r4cqsw" sourceRef="Event_0racyeb" targetRef="Event_1o8hzl4" />
   </bpmn:collaboration>
-  <bpmn:process id="OnlineShopBusiness" isExecutable="true" camunda:historyTimeToLive="180" camunda:isStartableInTasklist="false">
+  <bpmn:process id="OnlineShopBusiness" isExecutable="true" camunda:historyTimeToLive="180"
+    camunda:isStartableInTasklist="false">
     <bpmn:laneSet id="LaneSet_09w0vpx">
       <bpmn:lane id="Lane_0uf37rh">
         <bpmn:flowNodeRef>Gateway_0y2un8c</bpmn:flowNodeRef>
@@ -44,7 +53,8 @@
       <bpmn:outgoing>Flow_12or0lj</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1okg8we" messageRef="Message_36cr0ru" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:serviceTask id="Activity_17wggpx" name="Bestellstatus &#34;Abgeschlossen&#34;" camunda:type="external" camunda:topic="status_abgeschlossen">
+    <bpmn:serviceTask id="Activity_17wggpx" name="Bestellstatus &#34;Abgeschlossen&#34;"
+      camunda:type="external" camunda:topic="status_abgeschlossen">
       <bpmn:incoming>Flow_12or0lj</bpmn:incoming>
       <bpmn:outgoing>Flow_013w597</bpmn:outgoing>
       <bpmn:property id="Property_0p11uuk" name="__targetRef_placeholder" />
@@ -67,7 +77,8 @@
       <bpmn:outgoing>Flow_0jpig9f</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0ccqgc4" messageRef="Message_19iocpi" />
     </bpmn:intermediateThrowEvent>
-    <bpmn:serviceTask id="Activity_0ld7lxk" name="Bestellung überpfüfen" camunda:type="external" camunda:topic="handle_pruefen">
+    <bpmn:serviceTask id="Activity_0ld7lxk" name="Bestellung überpfüfen" camunda:type="external"
+      camunda:topic="handle_pruefen">
       <bpmn:incoming>Flow_1jsx1ja</bpmn:incoming>
       <bpmn:outgoing>Flow_054y0xx</bpmn:outgoing>
       <bpmn:property id="Property_1gj2cnl" name="__targetRef_placeholder" />
@@ -81,7 +92,8 @@
       <bpmn:outgoing>Flow_1jsx1ja</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1fwp6ts" messageRef="Message_32997d1" />
     </bpmn:startEvent>
-    <bpmn:serviceTask id="Activity_05lpdaj" name="Bestellstatus &#34;Versendet&#34;" camunda:type="external" camunda:topic="status_versand">
+    <bpmn:serviceTask id="Activity_05lpdaj" name="Bestellstatus &#34;Versendet&#34;"
+      camunda:type="external" camunda:topic="status_versand">
       <bpmn:incoming>Flow_0um1xqq</bpmn:incoming>
       <bpmn:outgoing>Flow_0hqhqbk</bpmn:outgoing>
       <bpmn:property id="Property_15l8i1i" name="__targetRef_placeholder" />
@@ -91,8 +103,10 @@
       </bpmn:dataInputAssociation>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_054y0xx" sourceRef="Activity_0ld7lxk" targetRef="Gateway_0y2un8c" />
-    <bpmn:sequenceFlow id="Flow_1p3eid4" name="ja" sourceRef="Gateway_0y2un8c" targetRef="Activity_0l84jvp" />
-    <bpmn:sequenceFlow id="Flow_1mx2rs6" name="nein" sourceRef="Gateway_0y2un8c" targetRef="Event_17n9yra">
+    <bpmn:sequenceFlow id="Flow_1p3eid4" name="ja" sourceRef="Gateway_0y2un8c"
+      targetRef="Activity_0l84jvp" />
+    <bpmn:sequenceFlow id="Flow_1mx2rs6" name="nein" sourceRef="Gateway_0y2un8c"
+      targetRef="Event_17n9yra">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${genug_lager == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0jpig9f" sourceRef="Event_17n9yra" targetRef="Event_1t9xrr9" />
@@ -120,7 +134,8 @@
     <bpmn:intermediateThrowEvent id="Event_0y6f6wz" name="Warenkorb leeren">
       <bpmn:incoming>Flow_0o119xr</bpmn:incoming>
       <bpmn:outgoing>Flow_17o3brz</bpmn:outgoing>
-      <bpmn:compensateEventDefinition id="CompensateEventDefinition_1fbx7js" waitForCompletion="false" activityRef="Activity_0oqmmo3" />
+      <bpmn:compensateEventDefinition id="CompensateEventDefinition_1fbx7js"
+        waitForCompletion="false" activityRef="Activity_0oqmmo3" />
     </bpmn:intermediateThrowEvent>
     <bpmn:exclusiveGateway id="Gateway_1kbze8m" name="Alles richtig?">
       <bpmn:incoming>Flow_0s2313j</bpmn:incoming>
@@ -137,22 +152,29 @@
     <bpmn:endEvent id="Event_0pwtx7d">
       <bpmn:incoming>Flow_0gkfhd4</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0o119xr" name="Nein" sourceRef="Gateway_1kbze8m" targetRef="Event_0y6f6wz">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${bestellung_abgeschlossen == false}</bpmn:conditionExpression>
+    <bpmn:sequenceFlow id="Flow_0o119xr" name="Nein" sourceRef="Gateway_1kbze8m"
+      targetRef="Event_0y6f6wz">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${bestellung_abgeschlossen ==
+        false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1mp9qq9" name="ja" sourceRef="Gateway_0sn8rm7" targetRef="Activity_0oqmmo3" />
+    <bpmn:sequenceFlow id="Flow_1mp9qq9" name="ja" sourceRef="Gateway_0sn8rm7"
+      targetRef="Activity_0oqmmo3" />
     <bpmn:sequenceFlow id="Flow_0ic7hoh" sourceRef="Activity_0oqmmo3" targetRef="Activity_0kkf2d9" />
     <bpmn:sequenceFlow id="Flow_0pkhdeu" sourceRef="Activity_0kkf2d9" targetRef="Activity_1raehy6" />
     <bpmn:sequenceFlow id="Flow_0s2313j" sourceRef="Activity_1raehy6" targetRef="Gateway_1kbze8m" />
-    <bpmn:sequenceFlow id="Flow_16snaw7" name="Ja" sourceRef="Gateway_1kbze8m" targetRef="Activity_04igdmq" />
-    <bpmn:sequenceFlow id="Flow_0oqmi6z" name="nein" sourceRef="Gateway_0sn8rm7" targetRef="Event_025h5qq">
+    <bpmn:sequenceFlow id="Flow_16snaw7" name="Ja" sourceRef="Gateway_1kbze8m"
+      targetRef="Activity_04igdmq" />
+    <bpmn:sequenceFlow id="Flow_0oqmi6z" name="nein" sourceRef="Gateway_0sn8rm7"
+      targetRef="Event_025h5qq">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${gefunden == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_10yuywq" sourceRef="Activity_04igdmq" targetRef="Event_189eurt" />
     <bpmn:sequenceFlow id="Flow_0gkfhd4" sourceRef="Event_06g9g1r" targetRef="Event_0pwtx7d" />
     <bpmn:dataStoreReference id="DataStoreReference_18cfyy0" name="Store DB" />
-    <bpmn:sequenceFlow id="Flow_0hs47mk" name="ja" sourceRef="Gateway_1otlzc2" targetRef="Activity_1ubi4mw" />
-    <bpmn:sequenceFlow id="Flow_0q6auyg" name="nein" sourceRef="Gateway_1otlzc2" targetRef="Event_0kwp19h">
+    <bpmn:sequenceFlow id="Flow_0hs47mk" name="ja" sourceRef="Gateway_1otlzc2"
+      targetRef="Activity_1ubi4mw" />
+    <bpmn:sequenceFlow id="Flow_0q6auyg" name="nein" sourceRef="Gateway_1otlzc2"
+      targetRef="Event_0kwp19h">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${validated == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_12relhm" sourceRef="Activity_08mhw08" targetRef="Gateway_1otlzc2" />
@@ -161,7 +183,8 @@
       <bpmn:outgoing>Flow_0hs47mk</bpmn:outgoing>
       <bpmn:outgoing>Flow_0q6auyg</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Activity_08mhw08" name="Einloggen" camunda:type="external" camunda:topic="login">
+    <bpmn:serviceTask id="Activity_08mhw08" name="Einloggen" camunda:type="external"
+      camunda:topic="login">
       <bpmn:incoming>Flow_14qe0ix</bpmn:incoming>
       <bpmn:outgoing>Flow_12relhm</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -176,12 +199,14 @@
     <bpmn:endEvent id="Event_025h5qq">
       <bpmn:incoming>Flow_0oqmi6z</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:serviceTask id="Activity_1ubi4mw" name="Produkte durchstöbern" camunda:type="external" camunda:topic="produkte_suchen">
+    <bpmn:serviceTask id="Activity_1ubi4mw" name="Produkte durchstöbern" camunda:type="external"
+      camunda:topic="produkte_suchen">
       <bpmn:incoming>Flow_17o3brz</bpmn:incoming>
       <bpmn:incoming>Flow_0hs47mk</bpmn:incoming>
       <bpmn:outgoing>Flow_0scgd7e</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_1raehy6" name="Angaben prüfen" camunda:type="external" camunda:topic="bestellung_prüfen">
+    <bpmn:serviceTask id="Activity_1raehy6" name="Angaben prüfen" camunda:type="external"
+      camunda:topic="bestellung_prüfen">
       <bpmn:incoming>Flow_0pkhdeu</bpmn:incoming>
       <bpmn:outgoing>Flow_0s2313j</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -209,25 +234,30 @@
       <bpmn:messageEventDefinition id="MessageEventDefinition_0t0nh2f" messageRef="Message_32997d1" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1y3gn2t" sourceRef="Event_189eurt" targetRef="Event_06g9g1r" />
-    <bpmn:userTask id="Activity_0vl9jea" name="Login Daten angeben" camunda:formRef="LoginForm" camunda:formRefBinding="latest">
+    <bpmn:userTask id="Activity_0vl9jea" name="Login Daten angeben" camunda:formRef="LoginForm"
+      camunda:formRefBinding="latest">
       <bpmn:extensionElements />
       <bpmn:incoming>Flow_0m24eqw</bpmn:incoming>
       <bpmn:outgoing>Flow_14qe0ix</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:association id="Association_0j2v87q" associationDirection="One" sourceRef="Event_169udph" targetRef="Activity_04vk8kd" />
+    <bpmn:association id="Association_0j2v87q" associationDirection="One" sourceRef="Event_169udph"
+      targetRef="Activity_04vk8kd" />
   </bpmn:process>
-  <bpmn:process id="Process_00m3832" isExecutable="false" camunda:historyTimeToLive="180" camunda:isStartableInTasklist="false" />
+  <bpmn:process id="Process_00m3832" isExecutable="false" camunda:historyTimeToLive="180"
+    camunda:isStartableInTasklist="false" />
   <bpmn:message id="Message_32997d1" name="bestellung_abgeschlossen" />
   <bpmn:message id="Message_19iocpi" name="ware_bestellen" />
   <bpmn:message id="Message_1so3bgn" name="ware_versenden" />
   <bpmn:message id="Message_3e0qkib" name="" />
   <bpmn:message id="Message_14sab1l" name="post_uebergeben" />
   <bpmn:message id="Message_3g908ev" name="kunden_uebergeben" />
-  <bpmn:process id="Post" isExecutable="true" camunda:historyTimeToLive="180" camunda:isStartableInTasklist="false">
+  <bpmn:process id="Post" isExecutable="true" camunda:historyTimeToLive="180"
+    camunda:isStartableInTasklist="false">
     <bpmn:intermediateThrowEvent id="Event_0racyeb" name="Paket Empfänger übergeben">
       <bpmn:incoming>Flow_1lg9wvg</bpmn:incoming>
       <bpmn:outgoing>Flow_0taqaic</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1m35rx7" messageRef="Message_1p7leb9" camunda:type="external" camunda:topic="kunden_uebergeben" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1m35rx7" messageRef="Message_1p7leb9"
+        camunda:type="external" camunda:topic="kunden_uebergeben" />
     </bpmn:intermediateThrowEvent>
     <bpmn:endEvent id="Event_15p5i55">
       <bpmn:incoming>Flow_0taqaic</bpmn:incoming>
@@ -248,7 +278,8 @@
   <bpmn:message id="Message_36cr0ru" name="post_abschluss" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_043j7ah">
-      <bpmndi:BPMNShape id="Participant_0j7rnwp_di" bpmnElement="Participant_0j7rnwp" isHorizontal="true">
+      <bpmndi:BPMNShape id="Participant_0j7rnwp_di" bpmnElement="Participant_0j7rnwp"
+        isHorizontal="true">
         <dc:Bounds x="180" y="550" width="2240" height="365" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
@@ -375,8 +406,9 @@
         <di:waypoint x="268" y="610" />
         <di:waypoint x="420" y="610" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Participant_0igdcb0_di" bpmnElement="Participant_0igdcb0" isHorizontal="true">
-        <dc:Bounds x="180" y="80" width="2238" height="440" />
+      <bpmndi:BPMNShape id="Participant_0igdcb0_di" bpmnElement="Participant_0igdcb0"
+        isHorizontal="true">
+        <dc:Bounds x="180" y="80" width="2240" height="440" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
@@ -557,11 +589,22 @@
         <di:waypoint x="1020" y="170" />
         <di:waypoint x="1040" y="170" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Participant_0qix09v_di" bpmnElement="Participant_0qix09v" isHorizontal="true">
+      <bpmndi:BPMNEdge id="Flow_1y3gn2t_di" bpmnElement="Flow_1y3gn2t">
+        <di:waypoint x="1858" y="300" />
+        <di:waypoint x="2122" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0j2v87q_di" bpmnElement="Association_0j2v87q">
+        <di:waypoint x="1020" y="242" />
+        <di:waypoint x="1020" y="170" />
+        <di:waypoint x="1040" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Participant_0qix09v_di" bpmnElement="Participant_0qix09v"
+        isHorizontal="true">
         <dc:Bounds x="180" y="1180" width="2240" height="60" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Participant_0it8isu_di" bpmnElement="Participant_0it8isu" isHorizontal="true">
+      <bpmndi:BPMNShape id="Participant_0it8isu_di" bpmnElement="Participant_0it8isu"
+        isHorizontal="true">
         <dc:Bounds x="180" y="950" width="2240" height="200" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
@@ -592,19 +635,23 @@
         <di:waypoint x="1188" y="1050" />
         <di:waypoint x="1290" y="1050" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssociation_12qucan_di" bpmnElement="DataInputAssociation_12qucan">
+      <bpmndi:BPMNEdge id="DataInputAssociation_12qucan_di"
+        bpmnElement="DataInputAssociation_12qucan">
         <di:waypoint x="1640" y="700" />
         <di:waypoint x="1640" y="655" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssociation_1at0yjf_di" bpmnElement="DataInputAssociation_1at0yjf">
+      <bpmndi:BPMNEdge id="DataInputAssociation_1at0yjf_di"
+        bpmnElement="DataInputAssociation_1at0yjf">
         <di:waypoint x="470" y="690" />
         <di:waypoint x="470" y="655" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataInputAssociation_12prtqs_di" bpmnElement="DataInputAssociation_12prtqs">
+      <bpmndi:BPMNEdge id="DataInputAssociation_12prtqs_di"
+        bpmnElement="DataInputAssociation_12prtqs">
         <di:waypoint x="1360" y="700" />
         <di:waypoint x="1360" y="655" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="DataOutputAssociation_1twd4yx_di" bpmnElement="DataOutputAssociation_1twd4yx">
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1twd4yx_di"
+        bpmnElement="DataOutputAssociation_1twd4yx">
         <di:waypoint x="946" y="340" />
         <di:waypoint x="938" y="355" />
       </bpmndi:BPMNEdge>
