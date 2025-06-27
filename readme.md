@@ -2,11 +2,11 @@
 
 **Authors**: Ronny Bruhin, Batuhan Seker
 
-**Date**: 20.06.2025
+**Date**: 20.06.2025 - 01.07.2025
 
 ## 1.  Einleitung
 
-Dieses Dokument beschreibt das Geschäftsprozessmodell eines Onlineshops. Das Modell bildet den Kernprozess einer Online-Bestellung ab, von der Kundeninteraktion bis zur Zahlungsabwicklung. Die Erstellung dieses Modells erfolgte im Rahmen des Moduls "254 - Geschäftsprozesse modellieren" an der TBZ.
+Dieses Dokument beschreibt das Geschäftsprozessmodell eines Onlineshops. Das Modell bildet den Kernprozess einer Online-Bestellung ab, von der Kundeninteraktion bis zur Zahlungsabwicklung. Es soll als Basis für die Automatisierung mittels Camunda dienen. Die Erstellung dieses Modells erfolgte im Rahmen des Moduls "254 - Geschäftsprozesse modellieren" an der TBZ.
 
 ### 1.1 Ziel und Nutzen
 
