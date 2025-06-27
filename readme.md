@@ -52,7 +52,7 @@ Der Warenkorb wird in der Datenbank gespeichert.
 8. **Alles richtig?**
     - **Entscheidung:** Sind alle Angaben korrekt?
         - **Ja:** Weiter zu **"Bestellung abschicken"**.
-        - **Nein:** Der Kunde kann die Angaben korrigieren und erneut prüfen.
+        - **Nein:** Die Compensation wird ausgelöst, welche den Warenkorb leert.
 
 9. **Bezahlen:** Der Kunde wählt die Zahlungsmethode aus und gibt die erforderlichen Zahlungsinformationen ein.
 
@@ -90,7 +90,9 @@ Der Warenkorb wird in der Datenbank gespeichert.
 10. **Ende:** Der Prozess endet mit der Aktualisierung des Bestellstatus.
 
 ### **Post-Prozess (Pool "Post")**
+
 ![Pool Post](./image/M254_OnlineShop_PostPool.png)
+
 1. **Start:** Der Prozess beginnt mit dem Empfang der **"Warensendung"-Nachricht** vom Geschäftskunden.
 
 2. **Bestellung liefern:** Die Post liefert die Bestellung an den Kunden.
