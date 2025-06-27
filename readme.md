@@ -21,10 +21,16 @@ Ziel dieses Prozesses ist es, die Onlinebestellung effizient, kundenfreundlich u
 
 Der abgebildete Geschäftsprozess beschreibt den Ablauf einer Bestellung in einem Onlineshop und involviert mehrere Akteure: den **Kunden**, den **Shopbetreiber**, den **Lieferanten** und die **Post**.
 
-Der Prozess beginnt im Pool "Kunde" mit dem Ereignis **"Bestellung aufgeben"**.
-    Kunden-Prozess (Pool "Kunde"):
-◦
-Nach dem Aufgeben der Bestellung wird geprüft, ob der Kunde registriert ist
+
+### **Kunden-Prozess (Pool "Kunde")**
+
+1. **Start:** Der Prozess beginnt im Pool "Kunde" mit dem Start Event **"Will etwas bestellen"**.
+
+2. **Login Data Entry:** Der Kunde gibt seine  Logindaten ein.
+
+3. **Login:** Das System versucht den Kunden einzuloggen.
+
+4. 
 
 Ist der Kunde nicht registriert, erfolgt eine "Registrierung abschliessen"-Aktivität
 
@@ -44,7 +50,7 @@ und das Endereignis "Bestellung abgeschlossen" erreicht
 Während des Prozesses sendet der Kunde eine Nachrichtenfluss "Bestellung" an den Geschäftskunden
 Auch die Kommunikation über die Zahlung erfolgt via Nachrichtenflüsse zwischen Kunde und Geschäftskunde
 
-**Geschäftskunden-Prozess (Pool "Geschäftskunde"):**
+### **Geschäftskunden-Prozess (Pool "Geschäftskunde")**
 
 Der Prozess für den Geschäftskunden beginnt mit dem Empfang der "Bestellung erhalten"-Nachricht vom Kunden
 
@@ -71,10 +77,10 @@ Parallel dazu wird die "Rechnung erstellen"
 Wird der Zahlungseingang nicht innerhalb einer bestimmten Zeit erkannt, wird eine "Mahnung versenden"
  und der Prozess für die "Mahnung verarbeiten"
  fortgesetzt.
-
+ Verantwortlichkeit im Zusammenhang mit der "Bestellung verarbeiten" und "Bestel
 Lieferanten-Prozess (Pool "Lieferant"):
 
-Obwohl detaillierte Aufgaben nicht sichtbar sind, ist der Lieferant als Pool vorhanden, was eine Interaktion oder Verantwortlichkeit im Zusammenhang mit der "Bestellung verarbeiten" und "Bestellung versenden" im Geschäftskunden-Pool impliziert
+Obwohl detaillierte Aufgaben nicht 2sichtbar sind, ist der Lieferant als Pool vorhanden, was eine Interaktion oderlung versenden" im Geschäftskunden-Pool impliziert
 
 Post-Prozess (Pool "Post"):
 
