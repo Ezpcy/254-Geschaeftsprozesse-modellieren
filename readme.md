@@ -21,18 +21,31 @@ Ziel dieses Prozesses ist es, die Onlinebestellung effizient, kundenfreundlich u
 
 Der abgebildete Geschäftsprozess beschreibt den Ablauf einer Bestellung in einem Onlineshop und involviert mehrere Akteure: den **Kunden**, den **Shopbetreiber**, den **Lieferanten** und die **Post**.
 
+![Online Shop Geschäftsprozess](./image/M254_OnlineShop_BPMN.png)
 
 ### **Kunden-Prozess (Pool "Kunde")**
+
+![Pool Kunde](./image/M254_OnlineShop_KundePool.png)
 
 1. **Start:** Der Prozess beginnt im Pool "Kunde" mit dem Start Event **"Will etwas bestellen"**.
 
 2. **Login Data Entry:** Der Kunde gibt seine  Logindaten ein.
 
 3. **Login:** Das System versucht den Kunden einzuloggen.
+    - **Entscheidung:** Ist der Login erfolgreich?
+        - **Ja:** Weiter zu **"Adresse eingeben"**.
+        - **Nein:** Wenn der Login fehlschlägt, wird der Prozess beendet.
 
-4. 
+4. **Produkte durchstöbern:** Der Kunde stöbert durch die verfügbaren Produkte.
+    - **Entscheidung:** Hat der Kunde passende Produkte gefunden?
+        - **Ja:** Weiter zu **"Produkte in den Warenkorb legen"**.
+        - **Nein:** Wenn der Kunde keine Produkte ausgewählt hat, wird der Prozess beendet.
 
-Ist der Kunde nicht registriert, erfolgt eine "Registrierung abschliessen"-Aktivität
+5. **Produkte in den Warenkorb legen:** Der Kunde legt die ausgewählten Produkte in den Warenkorb.
+Dabei wird ein **Compensation Event** ausgelöst, um den Warenkorb bei Bedarf zurückzusetzen.
+Der Warenkorb wird in der Datenbank gespeichert.
+
+6. **Zur Kasse gehen:**
 
 Ist der Kunde registriert (oder hat sich registriert), müssen die "Logindaten eingeben" werden
 
@@ -50,8 +63,8 @@ und das Endereignis "Bestellung abgeschlossen" erreicht
 Während des Prozesses sendet der Kunde eine Nachrichtenfluss "Bestellung" an den Geschäftskunden
 Auch die Kommunikation über die Zahlung erfolgt via Nachrichtenflüsse zwischen Kunde und Geschäftskunde
 
-### **Geschäftskunden-Prozess (Pool "Geschäftskunde")**
-
+### **OnlineShop-Prozess (Pool "OnlineShop")**
+![Pool OnlineShop](./image/M254_OnlineShop_ShopPool.png)
 Der Prozess für den Geschäftskunden beginnt mit dem Empfang der "Bestellung erhalten"-Nachricht vom Kunden
 
 Danach wird die "Bestellung prüfen"
