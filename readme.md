@@ -116,14 +116,18 @@ Wir haben eine **CRUD**-ähnliche Applikation mit Fokus auf das Backend entwicke
 ### Technologien
 
 - **Programmiersprache:** Python  
-    - Python wurde wegen seiner Einfachheit gewählt, um möglichst wenig Zeit für das Backend und mehr für die Prozessmodellierung zu haben.
-    - 📚 **Wichtige Bibliotheken:**
-        - `camunda-external-task-client-python3`: Für die Integration mit der Camunda Process Engine
-        - `uvicorn`: Asynchroner Webserver
-        - `sqlite3`: Datenbankanbindung
-        - `fastapi`: Webframework für APIs
+
+  - Python wurde wegen seiner Einfachheit gewählt, um möglichst wenig Zeit für das Backend und mehr für die Prozessmodellierung zu haben.
+
+- 📚 **Wichtige Bibliotheken:**
+
+  - §`camunda-external-task-client-python3`: Für die Integration mit der Camunda Process Engine
+  - `uvicorn`: Asynchroner Webserver
+  - `sqlite3`: Datenbankanbindung
+
 - **Datenbank:** SQLite  
-    - SQLite ist serverlos, benötigt keine komplexe Einrichtung und speichert alles in einer einzigen Datei, was die Verteilung vereinfacht.
+
+  - SQLite ist serverlos, benötigt keine komplexe Einrichtung und speichert alles in einer einzigen Datei, was die Verteilung vereinfacht.
 
 ### Die Datenbank
 
@@ -172,10 +176,12 @@ CREATE TABLE IF NOT EXISTS orders (
 ```
 
 Die Passwörter sind **base64-kodiert** (nur zu Demo-Zwecken). Nutzer und Bestellungen sind relational verknüpft.
+
 ### Web API
 
 Der Aufbau des Backends:
-```
+
+```shell
 app/
 ├── main.py           # Hauptanwendung
 ├── db.py             # Datenbank-Interaktion
@@ -183,6 +189,7 @@ app/
 ```
 
 **Implementierte Endpunkte:**
+
 - `POST /login` — Benutzer-Login
 - `POST /logout` — Benutzer abmelden
 - `GET /products` — Alle Produkte anzeigen
@@ -190,7 +197,7 @@ app/
 - `GET /orders` — Bestellungen des Nutzers (nur mit Authentifizierung)
 - `GET /orders/me` — Eigene Bestellungen (nur mit Authentifizierung)
 - `PUT /admin/orders/{order_id}` — Status aktualisieren (nur Admin)
-- `DELETE /admin/orders/{order_id}` — Bestellung löschen (nur Admin)    
+- `DELETE /admin/orders/{order_id}` — Bestellung löschen (nur Admin)
 
 ---
 
@@ -201,11 +208,11 @@ Der eigentliche Geschäftsprozess wurde im **Camunda Modeler** erstellt und in d
 ### Grundlegender Ablauf
 
 - Bestellung anlegen → Produkte prüfen → evtl. Nachbestellen → Verpacken → Versand anstossen (Nachricht) → Postprozess übernimmt
-    
+
 - Der **Post-Prozess** startet dabei nicht automatisch mit dem Hauptprozess, sondern wird erst durch eine **Message (z.B. `post_uebergeben`)** getriggert.
-    
+
 - Verschiedene Pools/Teilnehmer repräsentieren verschiedene Beteiligte wie Shop, Kunde, Lieferant, Post.
-    
+  
 ---
 
 ## Herausforderungen & Erkenntnisse
@@ -215,13 +222,14 @@ Der eigentliche Geschäftsprozess wurde im **Camunda Modeler** erstellt und in d
 - **Problem:** Zunächst wurde der Camunda `ExternalTaskWorker` mit nur einer Funktion (`subscribe()`) gestartet, was dazu führte, dass jeweils nur ein Task verarbeitet wurde.
 - **Lösung:** Für jeden Service Task-Topic musste ein **eigener Worker in einem eigenen Thread** laufen, damit mehrere Tasks parallel abgearbeitet werden können. Am Ende waren es 10 Threads für 10 verschiedene Topics.
 - **Lernpunkt:** Camunda External Task Worker blockieren standardmässig, d.h. ein Worker kann immer nur ein Topic bedienen.
+
 ### 2. **Pool-Konfiguration & Prozessstart**
 
 - **Problem:** Beim Starten des Prozesses wurden plötzlich mehrere Pools (z.B. „Shop“ und „Post“) unabhängig voneinander gestartet, auch ohne zugehörige Bestellung.
 - **Ursache:** Die Pools/Prozesse waren als **`startable`** in der Tasklist konfiguriert.
 - **Lösung:** Die Pools wurden auf **`Non-Startable`** gesetzt, sodass sie nur durch Nachrichten aus dem Hauptprozess oder einen gezielten API-Aufruf starten.
 - **Lernpunkt:** Pools dürfen **nicht** als „startable in tasklist“ markiert sein, wenn sie _nur_ durch Nachrichten/Ereignisse getriggert werden sollen.
-    
+
 ### 3. **Post-Prozess: Kein Job sichtbar**
 
 - **Problem:** Nach Auslösen der „Ware versenden“-Nachricht wurde der Post-Prozess zwar instanziiert, aber es erschien **kein Job** im Cockpit.
@@ -241,11 +249,11 @@ Der eigentliche Geschäftsprozess wurde im **Camunda Modeler** erstellt und in d
 - **Problem:** Prozess-Variablen wie `user_id` oder `product_id` wurden nicht gefunden oder falsch gesetzt.
 - **Lösung:** Sicherstellen, dass alle benötigten Variablen **rechtzeitig** im richtigen Kontext übergeben und im Prozessverlauf gesetzt werden.
 - **Lernpunkt:** Variablen in Camunda sind immer an eine Prozessinstanz oder einen Task gebunden und müssen explizit übergeben werden.
-    
+
 ### 6. **Fehlersuche & Debugging in Camunda**
 
 - **Cockpit** ist das wichtigste Tool zur Prozessüberwachung:
-    - Dort sieht man, wo Tokens steckenbleiben, welche Events ausgeführt wurden und ob Jobs erzeugt werden.
+  - Dort sieht man, wo Tokens steckenbleiben, welche Events ausgeführt wurden und ob Jobs erzeugt werden.
 - **XML direkt kontrollieren:** Manchmal stimmen grafische Einstellungen, aber im XML fehlen Implementation/Topic bei Tasks oder Nachrichten-Namen sind falsch.
 
 ---
@@ -258,9 +266,9 @@ Der eigentliche Geschäftsprozess wurde im **Camunda Modeler** erstellt und in d
 - **Konsistente Namensgebung:** Nachrichten müssen in BPMN und API-Aufrufen **identisch** heissen.
 - **Cockpit für Fehleranalyse nutzen**: Bleibt ein Token stehen, stimmt meist die Modellierung, Topic oder der Nachricht-Name nicht.
 - **Prozesse nicht als startable markieren**, wenn sie nur durch Nachrichten gestartet werden sollen.
-    
 
 ---
+
 ## Persönliches Fazit
 
 Das Projekt hat eindrucksvoll gezeigt, wie wichtig es ist, BPMN-Prozesse, Nachrichtenflüsse und technische Implementierung konsequent aufeinander abzustimmen. Insbesondere das Zusammenspiel von Nachrichten, External Tasks und den jeweiligen Worker-Prozessen ist entscheidend für eine funktionierende Prozessautomatisierung.
@@ -269,6 +277,6 @@ Die Arbeit mit Camunda als Prozessengine war für uns insgesamt eher ernüchtern
 
 Viele Probleme – etwa beim Zusammenspiel von Nachrichten, External Tasks, Worker-Implementierung oder Variablenhandling – kosteten viel Zeit und Nerven. Besonders frustrierend war, dass viele Fehlerquellen nicht offensichtlich waren und sich durch spärliche oder teilweise veraltete Ressourcen und Dokumentationen im Netz nur schwer lösen liessen. Die Fehlermeldungen von Camunda sind oft wenig sprechend und erfordern viel Trial-and-Error sowie tiefes Debugging im Cockpit und BPMN-XML.
 
-Auch der Community-Support war weniger hilfreich als erhofft. Viele Lösungen mussten wir letztlich selbst durch systematisches Probieren, intensive Recherche und eigenständiges Debugging erarbeiten. 
+Auch der Community-Support war weniger hilfreich als erhofft. Viele Lösungen mussten wir letztlich selbst durch systematisches Probieren, intensive Recherche und eigenständiges Debugging erarbeiten.
   
 Camunda bietet zwar viele Möglichkeiten, die tatsächliche Entwicklung und Fehlersuche kann aber schnell sehr mühsam werden. Ohne vertieftes Vorwissen und ausreichend Zeit für Testen und Debugging stösst man rasch an Grenzen – gerade bei komplexeren, mehrstufigen Prozessen. Für kleine Prototypen ist Camunda interessant, für produktive, grössere Projekte aber aus unserer Sicht nur mit sehr viel Einarbeitung und Geduld zu empfehlen.
