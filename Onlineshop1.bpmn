@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0f25eaq" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0f25eaq" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.36.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
   <bpmn:collaboration id="Collaboration_043j7ah">
     <bpmn:participant id="Participant_0j7rnwp" name="OnlineShop" processRef="OnlineShopBusiness" />
     <bpmn:participant id="Participant_0igdcb0" name="Kunde" processRef="OnlineShopKunde" />
@@ -12,7 +12,7 @@
     <bpmn:messageFlow id="Flow_11ksiry" sourceRef="Event_077byfy" targetRef="Event_017ae07" />
     <bpmn:messageFlow id="Flow_1r4cqsw" sourceRef="Event_0racyeb" targetRef="Event_1o8hzl4" />
   </bpmn:collaboration>
-  <bpmn:process id="OnlineShopBusiness" isExecutable="true" camunda:historyTimeToLive="180" camunda:isStartableInTasklist="false">
+  <bpmn:process id="OnlineShopBusiness" isExecutable="false" camunda:historyTimeToLive="180" camunda:isStartableInTasklist="false">
     <bpmn:laneSet id="LaneSet_09w0vpx">
       <bpmn:lane id="Lane_0uf37rh">
         <bpmn:flowNodeRef>Gateway_0y2un8c</bpmn:flowNodeRef>
@@ -224,7 +224,7 @@
   <bpmn:message id="Message_3e0qkib" name="" />
   <bpmn:message id="Message_14sab1l" name="post_uebergeben" />
   <bpmn:message id="Message_3g908ev" name="kunden_uebergeben" />
-  <bpmn:process id="Post" isExecutable="true" camunda:historyTimeToLive="180" camunda:isStartableInTasklist="false">
+  <bpmn:process id="Post" isExecutable="false" camunda:historyTimeToLive="180" camunda:isStartableInTasklist="false">
     <bpmn:intermediateThrowEvent id="Event_0racyeb" name="Paket Empfänger übergeben">
       <bpmn:incoming>Flow_1lg9wvg</bpmn:incoming>
       <bpmn:outgoing>Flow_0taqaic</bpmn:outgoing>
